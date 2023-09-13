@@ -1,3 +1,9 @@
+import Search from '@/components/Search/Search';
+
 export default function Home() {
-  return <main></main>;
+  return (
+    <main>
+      <Search />
+    </main>
+  );
 }
