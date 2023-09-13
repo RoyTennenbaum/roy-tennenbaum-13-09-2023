@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-const Navbar = () => {
+const Navbar: React.FC = () => {
   return (
     <nav className="sticky mx-3 flex h-10 items-center justify-between">
       <h1>Weather Task</h1>
