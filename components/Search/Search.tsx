@@ -15,7 +15,12 @@ const Search: React.FC<searchProps> = ({ cities, setLocation }) => {
         htmlFor="search"
         className="flex rounded-md border border-green-400 bg-gray-50 py-3 pl-3 text-gray-500 focus-within:border-indigo-600"
       >
-        <Image src={searchIcon} alt="Search Icon" width={36} height={36} />
+        <Image
+          src="./images/search.svg"
+          alt="Search Icon"
+          width={36}
+          height={36}
+        />
         <input
           id="search"
           type="text"
