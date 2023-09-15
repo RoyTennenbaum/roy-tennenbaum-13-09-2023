@@ -1,14 +1,18 @@
 import { Dispatch, SetStateAction } from 'react';
 
 import Image from 'next/image';
-import searchIcon from './search.svg';
+import { city } from '../utils/locations';
+
+// interface searchProps {
+//   cities: string[];
+//   onSearch: Dispatch<SetStateAction<string>>;
+// }
 
 interface searchProps {
-  cities: string[];
-  setLocation: Dispatch<SetStateAction<string>>;
+  onSearch: (city: string) => void;
 }
 
-const Search: React.FC<searchProps> = ({ cities, setLocation }) => {
+const Search: React.FC<searchProps> = ({ onSearch }) => {
   return (
     <section className="flex justify-center">
       <label
@@ -26,7 +30,7 @@ const Search: React.FC<searchProps> = ({ cities, setLocation }) => {
           type="text"
           placeholder="Search by location..."
           className="outline-none"
-          onChange={(e) => setLocation(e.target.value)}
+          onChange={(e) => onSearch(e.target.value)}
         />
       </label>
     </section>

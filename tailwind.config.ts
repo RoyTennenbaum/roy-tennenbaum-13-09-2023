@@ -11,9 +11,6 @@ const config: Config = {
       backgroundImage: {
         'main-background': "url('/images/background.svg')",
       },
-      gridTemplateColumns: {
-        'auto-fit-5': 'repeat(auto-fit, minmax(100px, 1fr))',
-      },
     },
   },
   plugins: [],
