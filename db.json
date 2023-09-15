@@ -1,0 +1,154 @@
+{
+  "cities": [
+    {
+      "Version": 1,
+      "Key": "297030",
+      "Type": "City",
+      "Rank": 10,
+      "LocalizedName": "Riyadh",
+      "Country": {
+        "ID": "SA",
+        "LocalizedName": "Saudi Arabia"
+      },
+      "AdministrativeArea": {
+        "ID": "01",
+        "LocalizedName": "Riyadh"
+      }
+    },
+    {
+      "Version": 1,
+      "Key": "45449",
+      "Type": "City",
+      "Rank": 11,
+      "LocalizedName": "Rio de Janeiro",
+      "Country": {
+        "ID": "BR",
+        "LocalizedName": "Brazil"
+      },
+      "AdministrativeArea": {
+        "ID": "RJ",
+        "LocalizedName": "Rio De Janeiro"
+      }
+    },
+    {
+      "Version": 1,
+      "Key": "213490",
+      "Type": "City",
+      "Rank": 20,
+      "LocalizedName": "Rome",
+      "Country": {
+        "ID": "IT",
+        "LocalizedName": "Italy"
+      },
+      "AdministrativeArea": {
+        "ID": "62",
+        "LocalizedName": "Lazio"
+      }
+    },
+    {
+      "Version": 1,
+      "Key": "245072",
+      "Type": "City",
+      "Rank": 20,
+      "LocalizedName": "Rabat",
+      "Country": {
+        "ID": "MA",
+        "LocalizedName": "Morocco"
+      },
+      "AdministrativeArea": {
+        "ID": "04",
+        "LocalizedName": "Rabat-Salé-Kénitra"
+      }
+    },
+    {
+      "Version": 1,
+      "Key": "45090",
+      "Type": "City",
+      "Rank": 21,
+      "LocalizedName": "Recife",
+      "Country": {
+        "ID": "BR",
+        "LocalizedName": "Brazil"
+      },
+      "AdministrativeArea": {
+        "ID": "PE",
+        "LocalizedName": "Pernambuco"
+      }
+    },
+    {
+      "Version": 1,
+      "Key": "187458",
+      "Type": "City",
+      "Rank": 21,
+      "LocalizedName": "Raipur",
+      "Country": {
+        "ID": "IN",
+        "LocalizedName": "India"
+      },
+      "AdministrativeArea": {
+        "ID": "CT",
+        "LocalizedName": "Chhattisgarh"
+      }
+    },
+    {
+      "Version": 1,
+      "Key": "203541",
+      "Type": "City",
+      "Rank": 21,
+      "LocalizedName": "Ranchi",
+      "Country": {
+        "ID": "IN",
+        "LocalizedName": "India"
+      },
+      "AdministrativeArea": {
+        "ID": "JH",
+        "LocalizedName": "Jharkhand"
+      }
+    },
+    {
+      "Version": 1,
+      "Key": "295146",
+      "Type": "City",
+      "Rank": 21,
+      "LocalizedName": "Rostov-on-Don",
+      "Country": {
+        "ID": "RU",
+        "LocalizedName": "Russia"
+      },
+      "AdministrativeArea": {
+        "ID": "ROS",
+        "LocalizedName": "Rostov"
+      }
+    },
+    {
+      "Version": 1,
+      "Key": "59559",
+      "Type": "City",
+      "Rank": 23,
+      "LocalizedName": "Rugao",
+      "Country": {
+        "ID": "CN",
+        "LocalizedName": "China"
+      },
+      "AdministrativeArea": {
+        "ID": "JS",
+        "LocalizedName": "Jiangsu"
+      }
+    },
+    {
+      "Version": 1,
+      "Key": "61058",
+      "Type": "City",
+      "Rank": 23,
+      "LocalizedName": "Renshou County",
+      "Country": {
+        "ID": "CN",
+        "LocalizedName": "China"
+      },
+      "AdministrativeArea": {
+        "ID": "SC",
+        "LocalizedName": "Sichuan"
+      }
+    }
+  ]
+}
