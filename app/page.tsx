@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Search from '@/components/Search/Search';
-import Main from '@/components/Main/Main';
+import Content from '@/components/Content/Content';
 import Dropdown from '@/components/Search/Dropdown';
 
 export interface DataProp {
@@ -79,7 +79,7 @@ export default function Home() {
       {showDropdown && (
         <Dropdown cities={cities} onSelect={(city) => setQuery(city)} />
       )}
-      <Main />
+      <Content />
     </main>
   );
 }

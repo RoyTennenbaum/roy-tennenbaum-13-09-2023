@@ -1,4 +1,4 @@
-import CardList from '@/components/Main/CardList';
+import CardList from '@/components/Content/CardList';
 
 const weatherData = [
   { day: 'Sunday', temperature: '28°C' },

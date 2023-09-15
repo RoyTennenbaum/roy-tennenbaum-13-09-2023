@@ -8,7 +8,7 @@ const weatherData = [
   { day: 'Thursday', temperature: '37°C' },
 ];
 
-const Main: React.FC = () => {
+const Content: React.FC = () => {
   return (
     <section className="flex grow flex-col bg-white">
       <section className="flex justify-between">
@@ -25,4 +25,4 @@ const Main: React.FC = () => {
   );
 };
 
-export default Main;
+export default Content;
