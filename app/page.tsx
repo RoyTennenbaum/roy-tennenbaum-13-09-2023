@@ -1,38 +1,63 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { locations } from '../components/utils/locations';
-import { city } from '../components/utils/locations';
 import Search from '@/components/Search/Search';
 import Main from '@/components/Main/Main';
+import Dropdown from '@/components/Search/Dropdown';
 
-interface DataProp {
+export interface DataProp {
   Key: string;
   LocalizedName: string;
 }
 
 export default function Home() {
   const [query, setQuery] = useState('');
-  const [cities, setCities] = useState<city[]>([]);
+  const [cities, setCities] = useState<DataProp[]>([]);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     const abortController = new AbortController();
+
     const autoCompleteLocation = async (abortSignal: AbortSignal) => {
-      if (query.length === 0) return;
+      if (query.length === 0) {
+        setShowDropdown(false);
+        setCities([]);
+        return;
+      }
+
       try {
         const response = await fetch(
           // `http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${process.env.NEXT_PUBLIC_WEATHER_API}&q=${query}`,
           'http://localhost:3001/cities',
           {
             signal: abortSignal,
-            headers: { 'Content-Type': 'application/json' },
           }
         );
-        const data = (await response.json()) as DataProp[];
+        if (!response.ok) {
+          throw new Error(
+            `Response is not OK: ${response.status}, ${response.statusText}`
+          );
+        }
 
-        setCities(data.filter((data) => data.LocalizedName.includes(query)));
+        const rawData = await response.json();
+        if (!Array.isArray(rawData)) {
+          throw new Error(
+            `Response data is not of the expected type: ${rawData}`
+          );
+        }
+
+        const data: DataProp[] = rawData.map((city: any) => ({
+          Key: city.Key,
+          LocalizedName: city.LocalizedName,
+        }));
+
+        setCities(
+          data.filter((data) =>
+            data.LocalizedName.toLowerCase().includes(query)
+          )
+        );
       } catch (err) {
-        console.log(err);
+        console.error('Unexpected error:', err);
       }
     };
     autoCompleteLocation(abortController.signal);
@@ -41,25 +66,20 @@ export default function Home() {
       abortController.abort();
     };
   }, [query]);
-  //console.log(cities);
+  console.log(cities);
+
+  const handleSearch = (value: string) => {
+    setQuery(value);
+    setShowDropdown(true);
+  };
 
   return (
     <main className="flex h-full flex-col px-4 md:px-20 lg:px-40 xl:px-60">
-      <Search onSearch={(e) => setQuery(e)} />
+      <Search onSearch={handleSearch} />
+      {showDropdown && (
+        <Dropdown cities={cities} onSelect={(city) => setQuery(city)} />
+      )}
       <Main />
     </main>
   );
 }
-
-//   // const handleSearch = (query: string) => {
-//   //   setCities(locations.filter((city) => city.LocalizedName.includes(query)));
-//   // };
-//   // console.log(cities);
-
-//   //   return (
-//   //     <main className="flex h-full flex-col px-4 md:px-20 lg:px-40 xl:px-60">
-//   //       <Search cities={cities} onSearch={handleSearch} />
-//   //       <Main />
-//   //     </main>
-//   //   );
-//   // }

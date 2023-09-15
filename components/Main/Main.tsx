@@ -10,7 +10,7 @@ const weatherData = [
 
 const Main: React.FC = () => {
   return (
-    <section className="flex grow flex-col bg-white opacity-70">
+    <section className="flex grow flex-col bg-white">
       <section className="flex justify-between">
         <div className="flex flex-col items-stretch">
           <span>Tel Aviv</span>

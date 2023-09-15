@@ -1,12 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
-
 import Image from 'next/image';
-import { city } from '../utils/locations';
-
-// interface searchProps {
-//   cities: string[];
-//   onSearch: Dispatch<SetStateAction<string>>;
-// }
 
 interface searchProps {
   onSearch: (city: string) => void;
