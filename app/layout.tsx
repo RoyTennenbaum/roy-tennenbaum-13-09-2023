@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <body
-        className={`${inter.className} bg-main-background m-0 flex h-full min-h-screen flex-col bg-cover bg-no-repeat`}
+        className={`${inter.className} m-0 flex h-full min-h-screen flex-col bg-cover bg-no-repeat`}
       >
         <header>
           <Navbar />
