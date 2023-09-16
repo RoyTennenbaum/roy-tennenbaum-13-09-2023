@@ -22,6 +22,7 @@ const Search: React.FC<searchProps> = ({ onSearch }) => {
           type="text"
           placeholder="Search by location..."
           className="outline-none"
+          autoComplete="off"
           onChange={(e) => onSearch(e.target.value)}
         />
       </label>
