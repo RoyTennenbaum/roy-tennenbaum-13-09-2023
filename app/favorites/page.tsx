@@ -1,4 +1,8 @@
+'use client';
+
 import CardList from '@/components/Content/CardList';
+import { useWeather } from '@/components/Store/WeatherStore';
+import { useEffect } from 'react';
 
 const weatherData = [
   { day: 'Sunday', temperature: '28°C' },
@@ -8,12 +12,18 @@ const weatherData = [
   { day: 'Thursday', temperature: '27°C' },
 ];
 
-const Favorites = () => {
+export default function Favorites() {
+  const { favorites } = useWeather();
+
+  useEffect(() => {
+    // const favoritesWeather = favorites.map(({ LocalizedName, Key }) => {
+    //   fetch('');
+    // });
+  }, [favorites]);
+
   return (
     <div>
       <CardList weatherData={weatherData} />
     </div>
   );
-};
-
-export default Favorites;
+}

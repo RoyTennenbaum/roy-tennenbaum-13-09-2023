@@ -1,6 +1,7 @@
 import { FC, useState, useEffect } from 'react';
 import CardList from './CardList';
 import { DataProp } from '@/app/page';
+import { useWeather } from '../Store/WeatherStore';
 
 const weatherData = [
   { day: 'Sunday', temperature: '38°C' },
@@ -35,6 +36,8 @@ const Content: FC<ContentProps<CurrentWeatherProps>> = ({
   currentWeather,
   cityName,
 }) => {
+  const { forecast } = useWeather();
+
   return (
     <section className="flex grow flex-col bg-white">
       <section className="flex justify-between">
@@ -48,7 +51,7 @@ const Content: FC<ContentProps<CurrentWeatherProps>> = ({
         <button>ADD TO FAVORITES</button>
       </section>
       <section>
-        <CardList weatherData={weatherData} />
+        {forecast.length > 0 && <CardList weatherData={forecast} />}
       </section>
     </section>
   );

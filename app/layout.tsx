@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import Store from '@/components/Store/WeatherStore';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -13,11 +14,11 @@ export const metadata: Metadata = {
     'This is a simple weather app created by Roy Tennenbaum to showcase his frontend development skills. This app tracks weather in various cities across the globe.',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+interface Props {
+  children: React.ReactNode | React.ReactNode[];
+}
+
+export default function RootLayout({ children }: Props) {
   return (
     <html lang="en" className="h-full">
       <body
@@ -26,7 +27,7 @@ export default function RootLayout({
         <header>
           <Navbar />
         </header>
-        {children}
+        <Store>{children}</Store>
         <Footer />
       </body>
     </html>

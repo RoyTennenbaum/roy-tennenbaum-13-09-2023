@@ -6,7 +6,7 @@ interface WeatherData {
 }
 
 interface WeatherCardListProps {
-  weatherData: WeatherData[];
+  weatherData: any[];
 }
 
 const CardList: React.FC<WeatherCardListProps> = ({ weatherData }) => {
