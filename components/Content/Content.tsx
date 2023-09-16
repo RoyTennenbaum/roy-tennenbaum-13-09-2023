@@ -11,8 +11,8 @@ const weatherData = [
 ];
 
 interface ContentProps<T> {
-  city: DataProp;
-  CurrentWeatherProps?: T;
+  cityName: string;
+  currentWeather: T;
 }
 
 export interface CurrentWeatherProps {
@@ -31,63 +31,15 @@ export interface CurrentWeatherProps {
   };
 }
 
-const Content: FC<ContentProps<CurrentWeatherProps>> = ({ city }) => {
-  const [currentWeather, setCurrentWeather] = useState<CurrentWeatherProps>();
-  useEffect(() => {
-    const abortController = new AbortController();
-    const current = async (abortSignal: AbortSignal) => {
-      try {
-        const response = await fetch(
-          //`http://dataservice.accuweather.com/currentconditions/v1/${city.Key}?apikey=${process.env.NEXT_PUBLIC_WEATHER_API}`,
-          'http://localhost:3001/tel-aviv-current',
-          {
-            signal: abortSignal,
-          }
-        );
-        if (!response.ok) {
-          throw new Error(
-            `Response is not OK: ${response.status}, ${response.statusText}`
-          );
-        }
-
-        const rawData = await response.json();
-        if (!Array.isArray(rawData)) {
-          throw new Error(
-            `Response data is not of the expected type: ${rawData}`
-          );
-        }
-
-        const data = rawData[0];
-
-        setCurrentWeather({
-          LocalObservationDateTime: data.LocalObservationDateTime,
-          WeatherIcon: data.WeatherIcon,
-          IsDayTime: data.IsDayTime,
-          Temperature: {
-            Metric: {
-              Value: data.Temperature.Imperial.Value,
-              Unit: data.Temperature.Imperial.Unit,
-            },
-            Imperial: {
-              Value: data.Temperature.Metric.Value,
-              Unit: data.Temperature.Metric.Unit,
-            },
-          },
-        });
-      } catch (err) {
-        console.error('Unexpected error:', err);
-      }
-    };
-    current(abortController.signal);
-
-    return () => {};
-  }, [city.Key]);
-
+const Content: FC<ContentProps<CurrentWeatherProps>> = ({
+  currentWeather,
+  cityName,
+}) => {
   return (
     <section className="flex grow flex-col bg-white">
       <section className="flex justify-between">
         <div className="flex flex-col items-stretch">
-          <span>{city.LocalizedName}</span>
+          <span>{cityName}</span>
           <span>
             {currentWeather?.Temperature.Imperial.Value}°
             {currentWeather?.Temperature.Imperial.Unit}

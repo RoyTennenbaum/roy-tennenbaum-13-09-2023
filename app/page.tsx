@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-import Content from '@/components/Content/Content';
+import Content, { CurrentWeatherProps } from '@/components/Content/Content';
 import Search from '@/components/Search/Search';
 import Dropdown from '@/components/Search/Dropdown';
 
@@ -19,6 +19,57 @@ export default function Home() {
     Key: '215854',
     LocalizedName: 'Tel Aviv',
   });
+  const [currentWeather, setCurrentWeather] = useState<CurrentWeatherProps>();
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    const current = async (abortSignal: AbortSignal) => {
+      try {
+        const response = await fetch(
+          //`http://dataservice.accuweather.com/currentconditions/v1/${selectedCity.Key}?apikey=${process.env.NEXT_PUBLIC_WEATHER_API}`,
+          'http://localhost:3001/tel-aviv-current',
+          {
+            signal: abortSignal,
+          }
+        );
+        if (!response.ok) {
+          throw new Error(
+            `Response is not OK: ${response.status}, ${response.statusText}`
+          );
+        }
+
+        const rawData = await response.json();
+        if (!Array.isArray(rawData)) {
+          throw new Error(
+            `Response data is not of the expected type: ${rawData}`
+          );
+        }
+
+        const data = rawData[0];
+
+        setCurrentWeather({
+          LocalObservationDateTime: data.LocalObservationDateTime,
+          WeatherIcon: data.WeatherIcon,
+          IsDayTime: data.IsDayTime,
+          Temperature: {
+            Metric: {
+              Value: data.Temperature.Imperial.Value,
+              Unit: data.Temperature.Imperial.Unit,
+            },
+            Imperial: {
+              Value: data.Temperature.Metric.Value,
+              Unit: data.Temperature.Metric.Unit,
+            },
+          },
+        });
+      } catch (err) {
+        console.error('Unexpected error:', err);
+      }
+    };
+    current(abortController.signal);
+
+    return () => {};
+  }, [selectedCity.Key]);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -89,7 +140,12 @@ export default function Home() {
       {showDropdown && (
         <Dropdown cities={cities} onSelect={(city) => handleSelectCity(city)} />
       )}
-      <Content city={selectedCity} />
+      {currentWeather && (
+        <Content
+          cityName={selectedCity.LocalizedName}
+          currentWeather={currentWeather}
+        />
+      )}
     </main>
   );
 }
