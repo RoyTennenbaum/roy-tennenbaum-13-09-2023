@@ -1,28 +1,14 @@
 'use client';
-import { DataProp } from '@/app/page';
-import React, {
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
-import { CurrentWeatherProps } from '../../Content/Content';
 
-interface Props {
-  children: ReactNode | ReactNode[];
-}
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
-interface InitialStore {
-  selectedCity: DataProp;
-  setSelectedCity: Dispatch<SetStateAction<DataProp>>;
-  currentWeather?: CurrentWeatherProps;
-  forecast: any[];
-  favorites: DataProp[];
-  setFavorites: Dispatch<SetStateAction<DataProp[]>>;
-}
+import {
+  Props,
+  CityProp,
+  CurrentWeatherProps,
+  ForecastProps,
+  InitialStore,
+} from '@/types/global';
 
 const initialStore = {
   selectedCity: {
@@ -39,12 +25,12 @@ const initialStore = {
 const Context = createContext<InitialStore>(initialStore);
 
 const Store = ({ children }: Props) => {
-  const [selectedCity, setSelectedCity] = useState<DataProp>(
+  const [selectedCity, setSelectedCity] = useState<CityProp>(
     initialStore.selectedCity
   );
   const [currentWeather, setCurrentWeather] = useState<CurrentWeatherProps>();
-  const [forecast, setForecast] = useState<any[]>([]);
-  const [favorites, setFavorites] = useState<DataProp[]>(
+  const [forecast, setForecast] = useState<ForecastProps[]>([]);
+  const [favorites, setFavorites] = useState<CityProp[]>(
     initialStore.favorites
   );
 
@@ -97,17 +83,13 @@ const Store = ({ children }: Props) => {
             `rawCurrentWeatherData is not of the expected type: ${rawCurrentWeatherData}`
           );
         }
-
-        // if (!Array.isArray(rawForecastData)) {
-        //   throw new Error(
-        //     `rawForecastData is not of the expected type: ${rawForecastData}`
-        //   );
-        // }
-
-        setForecast(rawForecastData.DailyForecasts);
+        if (typeof rawForecastData !== 'object') {
+          throw new Error(
+            `rawForecastData is not of the expected type: ${rawForecastData}`
+          );
+        }
 
         const CurrentWeatherData = rawCurrentWeatherData[0];
-
         setCurrentWeather({
           LocalObservationDateTime: CurrentWeatherData.LocalObservationDateTime,
           WeatherIcon: CurrentWeatherData.WeatherIcon,
@@ -124,7 +106,30 @@ const Store = ({ children }: Props) => {
           },
         });
 
-        setForecast;
+        const forecastData = rawForecastData.DailyForecasts.map(
+          (forecastItem: any) => ({
+            Temperature: {
+              Minimum: {
+                Value: forecastItem.Temperature.Minimum.Value,
+                Unit: forecastItem.Temperature.Minimum.Unit,
+              },
+              Maximum: {
+                Value: forecastItem.Temperature.Maximum.Value,
+                Unit: forecastItem.Temperature.Maximum.Unit,
+              },
+            },
+            Day: {
+              Icon: forecastItem.Day.Icon,
+              IconPhrase: forecastItem.Day.IconPhrase,
+            },
+            Night: {
+              Icon: forecastItem.Night.Icon,
+              IconPhrase: forecastItem.Night.IconPhrase,
+            },
+          })
+        );
+
+        setForecast(forecastData);
       } catch (err) {
         console.error('Unexpected error:', err);
       }

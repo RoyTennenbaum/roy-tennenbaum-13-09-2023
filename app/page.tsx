@@ -7,14 +7,11 @@ import Search from '@/components/Search/Search';
 import Dropdown from '@/components/Search/Dropdown';
 import { useWeather } from '@/components/Store/WeatherStore/Store';
 
-export interface DataProp {
-  Key: string;
-  LocalizedName: string;
-}
+import { CityProp } from '@/types/global';
 
 export default function Home() {
   const [query, setQuery] = useState('');
-  const [cities, setCities] = useState<DataProp[]>([]);
+  const [cities, setCities] = useState<CityProp[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const { selectedCity, setSelectedCity, currentWeather } = useWeather();
 
@@ -49,7 +46,7 @@ export default function Home() {
           );
         }
 
-        const data: DataProp[] = rawData.map((city: any) => ({
+        const data: CityProp[] = rawData.map((city: any) => ({
           Key: city.Key,
           LocalizedName: city.LocalizedName,
         }));
@@ -73,7 +70,7 @@ export default function Home() {
     setShowDropdown(!!value.trim().length);
   };
 
-  const handleSelectCity = (city: DataProp) => {
+  const handleSelectCity = (city: CityProp) => {
     setSelectedCity(city);
     setQuery('');
     setShowDropdown(false);

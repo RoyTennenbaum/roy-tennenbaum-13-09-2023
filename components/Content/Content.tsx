@@ -1,7 +1,8 @@
-import { FC, useState, useEffect } from 'react';
+import { FC } from 'react';
 import CardList from './CardList';
-import { DataProp } from '@/app/page';
 import { useWeather } from '../Store/WeatherStore';
+
+import { ContentProps, CurrentWeatherProps } from '@/types/global';
 
 const weatherData = [
   { day: 'Sunday', temperature: '38°C' },
@@ -10,27 +11,6 @@ const weatherData = [
   { day: 'Wednesday', temperature: '35°C' },
   { day: 'Thursday', temperature: '37°C' },
 ];
-
-interface ContentProps<T> {
-  cityName: string;
-  currentWeather: T;
-}
-
-export interface CurrentWeatherProps {
-  LocalObservationDateTime: string;
-  WeatherIcon: number;
-  IsDayTime: boolean;
-  Temperature: {
-    Metric: {
-      Value: number;
-      Unit: string;
-    };
-    Imperial: {
-      Value: number;
-      Unit: string;
-    };
-  };
-}
 
 const Content: FC<ContentProps<CurrentWeatherProps>> = ({
   currentWeather,

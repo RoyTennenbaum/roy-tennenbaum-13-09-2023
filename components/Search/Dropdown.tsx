@@ -1,8 +1,8 @@
-import { DataProp } from '@/app/page';
+import { CityProp } from '@/types/global';
 
 interface DropdownProps {
-  cities: DataProp[];
-  onSelect: (city: DataProp) => void;
+  cities: CityProp[];
+  onSelect: (city: CityProp) => void;
 }
 
 const Dropdown: React.FC<DropdownProps> = ({ cities, onSelect }) => {
