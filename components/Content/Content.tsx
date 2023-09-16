@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { FC, useState, useEffect } from 'react';
 import CardList from './CardList';
+import { DataProp } from '@/app/page';
 
 const weatherData = [
   { day: 'Sunday', temperature: '38°C' },
@@ -9,16 +10,38 @@ const weatherData = [
   { day: 'Thursday', temperature: '37°C' },
 ];
 
-interface CurrentProps {
-  LocalObservationDateTime: string;
+interface ContentProps<T> {
+  city: DataProp;
+  CurrentWeatherProps?: T;
 }
 
-const Content: React.FC = () => {
+interface CurrentWeatherProps {
+  LocalObservationDateTime: string;
+  WeatherIcon: number;
+  IsDayTime: boolean;
+  Temperature: {
+    Metric: {
+      Value: number;
+      Unit: string;
+    };
+    Imperial: {
+      Value: number;
+      Unit: string;
+    };
+  };
+}
+
+const Content: FC<ContentProps<CurrentWeatherProps>> = ({
+  city,
+  CurrentWeatherProps,
+}) => {
+  const [currentWeather, setCurrentWeather] =
+    useState<CurrentWeatherProps | null>(null);
   useEffect(() => {
-    const currentWeather = async (city, abortSignal: AbortSignal) => {
+    const current = async (abortSignal: AbortSignal) => {
       try {
         const response = await fetch(
-          // `http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${process.env.NEXT_PUBLIC_WEATHER_API}&q=${query}`,
+          //`http://dataservice.accuweather.com/currentconditions/v1/${city.Key}?apikey=${process.env.NEXT_PUBLIC_WEATHER_API}`,
           'http://localhost:3001/tel-aviv-current',
           {
             signal: abortSignal,
@@ -37,30 +60,40 @@ const Content: React.FC = () => {
           );
         }
 
-        const data: DataProp[] = rawData.map((city: any) => ({
-          Key: city.Key,
-          LocalizedName: city.LocalizedName,
-        }));
+        const data = rawData[0];
 
-        setCities(
-          data.filter((data) =>
-            data.LocalizedName.toLowerCase().includes(query)
-          )
-        );
+        setCurrentWeather({
+          LocalObservationDateTime: data.LocalObservationDateTime,
+          WeatherIcon: data.WeatherIcon,
+          IsDayTime: data.IsDayTime,
+          Temperature: {
+            Metric: {
+              Value: data.Temperature.Imperial.Value,
+              Unit: data.Temperature.Imperial.Unit,
+            },
+            Imperial: {
+              Value: data.Temperature.Metric.Value,
+              Unit: data.Temperature.Metric.Unit,
+            },
+          },
+        });
       } catch (err) {
         console.error('Unexpected error:', err);
       }
     };
 
     return () => {};
-  }, []);
+  }, [city.Key]);
 
   return (
     <section className="flex grow flex-col bg-white">
       <section className="flex justify-between">
         <div className="flex flex-col items-stretch">
-          <span>Tel Aviv</span>
-          <span>38C</span>
+          <span>{city.LocalizedName}</span>
+          <span>
+            {CurrentWeatherProps?.Temperature.Metric.Value}°
+            {CurrentWeatherProps?.Temperature.Metric.Unit}
+          </span>
         </div>
         <button>ADD TO FAVORITES</button>
       </section>

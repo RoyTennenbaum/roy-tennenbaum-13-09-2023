@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Search from '@/components/Search/Search';
+
 import Content from '@/components/Content/Content';
+import Search from '@/components/Search/Search';
 import Dropdown from '@/components/Search/Dropdown';
 
 export interface DataProp {
@@ -14,6 +15,10 @@ export default function Home() {
   const [query, setQuery] = useState('');
   const [cities, setCities] = useState<DataProp[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [selectedCity, setSelectedCity] = useState<DataProp>({
+    Key: '215854',
+    LocalizedName: 'Tel Aviv',
+  });
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -66,20 +71,25 @@ export default function Home() {
       abortController.abort();
     };
   }, [query]);
-  console.log(cities);
 
   const handleSearch = (value: string) => {
     setQuery(value);
     setShowDropdown(true);
   };
 
+  const handleSelectCity = (city: DataProp) => {
+    setSelectedCity(city);
+    setQuery('');
+    setShowDropdown(false);
+  };
+
   return (
     <main className="flex h-full flex-col px-4 md:px-20 lg:px-40 xl:px-60">
       <Search onSearch={handleSearch} />
       {showDropdown && (
-        <Dropdown cities={cities} onSelect={(city) => setQuery(city)} />
+        <Dropdown cities={cities} onSelect={(city) => handleSelectCity} />
       )}
-      <Content />
+      <Content city={selectedCity} />
     </main>
   );
 }
