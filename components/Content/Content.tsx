@@ -15,7 +15,7 @@ interface ContentProps<T> {
   CurrentWeatherProps?: T;
 }
 
-interface CurrentWeatherProps {
+export interface CurrentWeatherProps {
   LocalObservationDateTime: string;
   WeatherIcon: number;
   IsDayTime: boolean;
@@ -31,13 +31,10 @@ interface CurrentWeatherProps {
   };
 }
 
-const Content: FC<ContentProps<CurrentWeatherProps>> = ({
-  city,
-  CurrentWeatherProps,
-}) => {
-  const [currentWeather, setCurrentWeather] =
-    useState<CurrentWeatherProps | null>(null);
+const Content: FC<ContentProps<CurrentWeatherProps>> = ({ city }) => {
+  const [currentWeather, setCurrentWeather] = useState<CurrentWeatherProps>();
   useEffect(() => {
+    const abortController = new AbortController();
     const current = async (abortSignal: AbortSignal) => {
       try {
         const response = await fetch(
@@ -81,6 +78,7 @@ const Content: FC<ContentProps<CurrentWeatherProps>> = ({
         console.error('Unexpected error:', err);
       }
     };
+    current(abortController.signal);
 
     return () => {};
   }, [city.Key]);
@@ -91,8 +89,8 @@ const Content: FC<ContentProps<CurrentWeatherProps>> = ({
         <div className="flex flex-col items-stretch">
           <span>{city.LocalizedName}</span>
           <span>
-            {CurrentWeatherProps?.Temperature.Metric.Value}°
-            {CurrentWeatherProps?.Temperature.Metric.Unit}
+            {currentWeather?.Temperature.Imperial.Value}°
+            {currentWeather?.Temperature.Imperial.Unit}
           </span>
         </div>
         <button>ADD TO FAVORITES</button>
