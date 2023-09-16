@@ -74,7 +74,7 @@ export default function Home() {
 
   const handleSearch = (value: string) => {
     setQuery(value);
-    setShowDropdown(true);
+    setShowDropdown(!!value.trim().length);
   };
 
   const handleSelectCity = (city: DataProp) => {
@@ -87,7 +87,7 @@ export default function Home() {
     <main className="flex h-full flex-col px-4 md:px-20 lg:px-40 xl:px-60">
       <Search onSearch={handleSearch} />
       {showDropdown && (
-        <Dropdown cities={cities} onSelect={(city) => handleSelectCity} />
+        <Dropdown cities={cities} onSelect={(city) => handleSelectCity(city)} />
       )}
       <Content city={selectedCity} />
     </main>
