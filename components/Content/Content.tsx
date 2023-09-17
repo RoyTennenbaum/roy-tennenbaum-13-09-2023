@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import CardList from './CardList';
 import { useWeather } from '../Store/WeatherStore';
 
@@ -17,14 +17,14 @@ const Content: FC<ContentProps<CurrentWeatherProps>> = ({
   cityName,
 }) => {
   const { forecast, favorites, setFavorites, selectedCity } = useWeather();
+  const isExists = !favorites.some((city) => city.Key === selectedCity.Key);
+  const toggleFavorites = (selectedCity: CityProp) => {
+    let updatedFavorites = isExists
+      ? [...favorites, selectedCity]
+      : [...favorites.filter((city) => city.Key !== selectedCity.Key)];
 
-  const addToFavorites = (selectedCity: CityProp) => {
-    if (!favorites.some((city) => city.Key === selectedCity.Key)) {
-      const updatedFavorites = [...favorites, selectedCity];
-
-      setFavorites(updatedFavorites);
-      localStorage['cities'] = JSON.stringify(updatedFavorites);
-    }
+    localStorage['cities'] = JSON.stringify(updatedFavorites);
+    setFavorites(updatedFavorites);
   };
 
   const normalizeForecast = (forecast: ForecastProps[]) =>
@@ -54,8 +54,8 @@ const Content: FC<ContentProps<CurrentWeatherProps>> = ({
             {currentWeather?.Temperature.Imperial.Unit}
           </span>
         </div>
-        <button onClick={() => addToFavorites(selectedCity)}>
-          ADD TO FAVORITES
+        <button onClick={() => toggleFavorites(selectedCity)}>
+          {`${isExists ? 'ADD TO' : 'REMOVE FROM'} FAVORITES`}
         </button>
       </section>
       <section>
