@@ -9,6 +9,7 @@ import {
   ForecastProps,
   InitialStore,
 } from '@/types/global';
+import { toast } from 'react-toastify';
 
 const initialStore = {
   selectedCity: {
@@ -65,11 +66,13 @@ const Store = ({ children }: Props) => {
         ]);
 
         if (!currentWeatherResponse.ok) {
+          toast('Error occured while fetching!');
           throw new Error(
             `currentWeatherResponse is not OK: ${currentWeatherResponse.status}, ${currentWeatherResponse.statusText}`
           );
         }
         if (!forecastResponse.ok) {
+          toast('Error occured while fetching!');
           throw new Error(
             `forecastResponse is not OK: ${forecastResponse.status}, ${forecastResponse.statusText}`
           );
@@ -79,11 +82,13 @@ const Store = ({ children }: Props) => {
         const rawForecastData = await forecastResponse.json();
 
         if (!Array.isArray(rawCurrentWeatherData)) {
+          toast('Wrong data type!');
           throw new Error(
             `rawCurrentWeatherData is not of the expected type: ${rawCurrentWeatherData}`
           );
         }
         if (typeof rawForecastData !== 'object') {
+          toast('Wrong data type!');
           throw new Error(
             `rawForecastData is not of the expected type: ${rawForecastData}`
           );
@@ -133,6 +138,7 @@ const Store = ({ children }: Props) => {
 
         setForecast(forecastData);
       } catch (err) {
+        toast('Oops! unexpected error!');
         console.error('Unexpected error:', err);
       }
     };

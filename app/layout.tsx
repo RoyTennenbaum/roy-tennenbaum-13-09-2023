@@ -1,11 +1,12 @@
 import './globals.css';
+import 'react-toastify/dist/ReactToastify.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Store from '@/components/Store/WeatherStore';
-
+import { ToastContainer } from 'react-toastify';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: Props) {
           <Navbar />
         </header>
         <Store>{children}</Store>
+        <ToastContainer position="top-left" />
         <Footer />
       </body>
     </html>

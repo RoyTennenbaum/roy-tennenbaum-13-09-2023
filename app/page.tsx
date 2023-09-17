@@ -6,6 +6,7 @@ import Content from '@/components/Content/Content';
 import Search from '@/components/Search/Search';
 import Dropdown from '@/components/Search/Dropdown';
 import { useWeather } from '@/components/Store/WeatherStore/Store';
+import { toast } from 'react-toastify';
 
 import { CityProp } from '@/types/global';
 
@@ -34,6 +35,7 @@ export default function Home() {
           }
         );
         if (!response.ok) {
+          toast('Error occured while fetching!');
           throw new Error(
             `Response is not OK: ${response.status}, ${response.statusText}`
           );
@@ -41,6 +43,7 @@ export default function Home() {
 
         const rawData = await response.json();
         if (!Array.isArray(rawData)) {
+          toast('Wrong data type!');
           throw new Error(
             `Response data is not of the expected type: ${rawData}`
           );
@@ -57,6 +60,7 @@ export default function Home() {
           )
         );
       } catch (err) {
+        toast('Oops! unexpected error!');
         console.error('Unexpected error:', err);
       }
     };

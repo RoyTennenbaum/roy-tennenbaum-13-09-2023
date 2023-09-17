@@ -4,6 +4,7 @@ import CardList from '@/components/Content/CardList';
 import { useWeather } from '@/components/Store/WeatherStore';
 import { CityProp } from '@/types/global';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 export default function Favorites() {
   const [updatedFavorites, setUpdatedFavorites] = useState<CityProp[]>();
@@ -28,12 +29,14 @@ export default function Favorites() {
               }
             );
             if (!response.ok) {
+              toast('Error occured while fetching!');
               throw new Error(
                 `Response is not OK: ${response.status}, ${response.statusText}`
               );
             }
             const rawCurrentWeatherData = await response.json();
             if (!Array.isArray(rawCurrentWeatherData)) {
+              toast('Wrong data type!');
               throw new Error(
                 `rawCurrentWeatherData is not of the expected type: ${rawCurrentWeatherData}`
               );
@@ -63,6 +66,7 @@ export default function Favorites() {
               CurrentWeather,
             });
           } catch (err) {
+            toast('Oops! unexpected error!');
             console.error('Unexpected error:', err);
           }
         })
