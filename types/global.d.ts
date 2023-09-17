@@ -18,7 +18,7 @@ interface CardListProps {
 }
 
 interface WeatherCardProps {
-  weatherData: ForecastProps | CurrentWeatherProps;
+  weatherData: ForecastProps | CityProp;
 }
 
 interface CurrentWeatherProps {
@@ -38,6 +38,7 @@ interface CurrentWeatherProps {
 }
 
 interface ForecastProps {
+  Date: string;
   Temperature: {
     Minimum: {
       Value: number;

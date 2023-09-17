@@ -17,6 +17,7 @@ const initialStore = {
   },
   setSelectedCity: () => {},
   currentWeather: undefined,
+  setCurrentWeather: () => {},
   forecast: [],
   favorites: [],
   setFavorites: () => {},
@@ -108,6 +109,7 @@ const Store = ({ children }: Props) => {
 
         const forecastData = rawForecastData.DailyForecasts.map(
           (forecastItem: any) => ({
+            Date: forecastItem.Date,
             Temperature: {
               Minimum: {
                 Value: forecastItem.Temperature.Minimum.Value,
@@ -145,6 +147,7 @@ const Store = ({ children }: Props) => {
         selectedCity,
         setSelectedCity,
         currentWeather,
+        setCurrentWeather,
         forecast,
         favorites,
         setFavorites,
