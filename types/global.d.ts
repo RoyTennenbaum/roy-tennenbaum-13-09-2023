@@ -18,14 +18,11 @@ interface ContentProps<T> {
 interface CardListProps {
   weatherData: WeatherCardProps[];
 }
-// interface CardListProps {
-//   weatherData: ForecastProps[] | CityProp[];
-// }
 
 interface WeatherCardProps {
   imageId: number;
   imageAlt: string;
-  temperature: string;
+  temperature: JSX.Element;
   cityProp?: CityProp;
 }
 
@@ -51,11 +48,11 @@ interface ForecastProps {
   Temperature: {
     Minimum: {
       Value: number;
-      Unit: string;
+      Unit: TempUnit;
     };
     Maximum: {
       Value: number;
-      Unit: string;
+      Unit: TempUnit;
     };
   };
   Day: {

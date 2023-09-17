@@ -28,10 +28,7 @@ const WeatherCard: FC<WeatherCardProps> = ({
     >
       {cityProp && <span>{cityProp.LocalizedName}</span>}
       <Image src={iconImage(imageId)} alt={imageAlt} width={100} height={100} />
-      <span
-        className="flex flex-col gap-2 text-center"
-        dangerouslySetInnerHTML={{ __html: temperature }}
-      />
+      {temperature}
     </section>
   );
 };

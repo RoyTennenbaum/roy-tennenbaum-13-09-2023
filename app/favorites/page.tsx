@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 export default function Favorites() {
   const [updatedFavorites, setUpdatedFavorites] = useState<CityProp[]>();
   const [isLoading, setIsLoading] = useState(true);
-  const { favorites } = useWeather();
+  const { favorites, selectedTempUnit } = useWeather();
 
   useEffect(() => {
     if (!Array.isArray(favorites) || favorites.length === 0)
@@ -50,12 +50,12 @@ export default function Favorites() {
               IsDayTime: CurrentWeatherData.IsDayTime,
               Temperature: {
                 Metric: {
-                  Value: CurrentWeatherData.Temperature.Imperial.Value,
-                  Unit: CurrentWeatherData.Temperature.Imperial.Unit,
-                },
-                Imperial: {
                   Value: CurrentWeatherData.Temperature.Metric.Value,
                   Unit: CurrentWeatherData.Temperature.Metric.Unit,
+                },
+                Imperial: {
+                  Value: CurrentWeatherData.Temperature.Imperial.Value,
+                  Unit: CurrentWeatherData.Temperature.Imperial.Unit,
                 },
               },
             };
@@ -87,7 +87,15 @@ export default function Favorites() {
     favorites.map((favorite) => ({
       imageId: favorite.CurrentWeather?.WeatherIcon ?? 0,
       imageAlt: favorite.CurrentWeather?.WeatherText ?? 'Image Alt',
-      temperature: `${favorite.CurrentWeather?.Temperature.Imperial.Value}°${favorite.CurrentWeather?.Temperature.Imperial.Unit}`,
+      temperature: (
+        <span>
+          {selectedTempUnit === 'C'
+            ? `${favorite.CurrentWeather?.Temperature.Metric.Value}°
+          ${favorite.CurrentWeather?.Temperature.Metric.Unit}`
+            : `${favorite.CurrentWeather?.Temperature.Imperial.Value}°
+          ${favorite.CurrentWeather?.Temperature.Imperial.Unit}`}
+        </span>
+      ),
       cityProp: favorite,
     }));
 

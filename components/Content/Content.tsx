@@ -3,7 +3,6 @@ import CardList from './CardList';
 import { useWeather } from '../Store/WeatherStore';
 
 import {
-  CardListProps,
   CityProp,
   ContentProps,
   CurrentWeatherProps,
@@ -11,12 +10,14 @@ import {
 } from '@/types/global';
 import calculateIfDayTime from '../Utils/calculateIfDayTime';
 import dayOfWeek from '../Utils/dayOfWeek';
+import toggleCelsiusFahrenheit from '../Utils/toggleCelsiusFahrenheit';
 
 const Content: FC<ContentProps<CurrentWeatherProps>> = ({
   currentWeather,
   cityName,
 }) => {
-  const { forecast, favorites, setFavorites, selectedCity } = useWeather();
+  const { forecast, favorites, setFavorites, selectedCity, selectedTempUnit } =
+    useWeather();
   const isExists = !favorites.some((city) => city.Key === selectedCity.Key);
   const toggleFavorites = (selectedCity: CityProp) => {
     let updatedFavorites = isExists
@@ -31,16 +32,36 @@ const Content: FC<ContentProps<CurrentWeatherProps>> = ({
     forecast.map((forecastData) => {
       const isDay = calculateIfDayTime(forecastData.Date);
       const day = dayOfWeek(forecastData.Date);
+
+      const minTemperature =
+        selectedTempUnit === 'C'
+          ? forecastData.Temperature.Minimum.Value
+          : toggleCelsiusFahrenheit({
+              value: forecastData.Temperature.Minimum.Value,
+              unit: forecastData.Temperature.Minimum.Unit,
+            }).value;
+
+      const maxTemperature =
+        selectedTempUnit === 'C'
+          ? forecastData.Temperature.Maximum.Value
+          : toggleCelsiusFahrenheit({
+              value: forecastData.Temperature.Maximum.Value,
+              unit: forecastData.Temperature.Maximum.Unit,
+            }).value;
+
       return {
         imageId: isDay ? forecastData.Day.Icon : forecastData.Night.Icon,
         imageAlt: isDay
           ? forecastData.Day.IconPhrase
           : forecastData.Night.IconPhrase,
-        temperature: `<span>${day}</span>
-        <span>
-          ${forecastData.Temperature.Minimum.Value}°${forecastData.Temperature.Minimum.Unit} - 
-          ${forecastData.Temperature.Maximum.Value}°${forecastData.Temperature.Maximum.Unit}
-        </span>`,
+        temperature: (
+          <section className="flex flex-col gap-2 text-center">
+            {day}
+            <span>
+              {`${minTemperature}°${selectedTempUnit} - ${maxTemperature}°${selectedTempUnit}`}
+            </span>
+          </section>
+        ),
       };
     });
 
@@ -50,8 +71,9 @@ const Content: FC<ContentProps<CurrentWeatherProps>> = ({
         <div className="flex flex-col items-stretch">
           <span>{cityName}</span>
           <span>
-            {currentWeather?.Temperature.Imperial.Value}°
-            {currentWeather?.Temperature.Imperial.Unit}
+            {selectedTempUnit === 'C'
+              ? `${currentWeather?.Temperature.Metric.Value}°${currentWeather?.Temperature.Metric.Unit}`
+              : `${currentWeather?.Temperature.Imperial.Value}°${currentWeather?.Temperature.Imperial.Unit}`}
           </span>
         </div>
         <button onClick={() => toggleFavorites(selectedCity)}>

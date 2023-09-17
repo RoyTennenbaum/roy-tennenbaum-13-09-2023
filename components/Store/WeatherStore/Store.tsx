@@ -116,12 +116,12 @@ const Store = ({ children }: Props) => {
           IsDayTime: CurrentWeatherData.IsDayTime,
           Temperature: {
             Metric: {
-              Value: CurrentWeatherData.Temperature.Imperial.Value,
-              Unit: CurrentWeatherData.Temperature.Imperial.Unit,
-            },
-            Imperial: {
               Value: CurrentWeatherData.Temperature.Metric.Value,
               Unit: CurrentWeatherData.Temperature.Metric.Unit,
+            },
+            Imperial: {
+              Value: CurrentWeatherData.Temperature.Imperial.Value,
+              Unit: CurrentWeatherData.Temperature.Imperial.Unit,
             },
           },
         });
