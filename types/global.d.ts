@@ -5,11 +5,20 @@ interface Props {
 interface CityProp {
   Key: string;
   LocalizedName: string;
+  CurrentWeather?: CurrentWeatherProps;
 }
 
 interface ContentProps<T> {
   cityName: string;
   currentWeather: T;
+}
+
+interface CardListProps {
+  weatherData: ForecastProps[] | CityProp[];
+}
+
+interface WeatherCardProps {
+  weatherData: ForecastProps | CurrentWeatherProps;
 }
 
 interface CurrentWeatherProps {
@@ -53,7 +62,8 @@ interface InitialStore {
   selectedCity: CityProp;
   setSelectedCity: Dispatch<SetStateAction<CityProp>>;
   currentWeather?: CurrentWeatherProps;
-  forecast: any[];
+  setCurrentWeather: Dispatch<SetStateAction<CurrentWeatherProps>>;
+  forecast: ForecastProps[];
   favorites: CityProp[];
   setFavorites: Dispatch<SetStateAction<CityProp[]>>;
 }
@@ -62,6 +72,8 @@ export {
   Props,
   CityProp,
   ContentProps,
+  CardListProps,
+  WeatherCardProps,
   CurrentWeatherProps,
   ForecastProps,
   InitialStore,

@@ -4,26 +4,60 @@ import CardList from '@/components/Content/CardList';
 import { useWeather } from '@/components/Store/WeatherStore';
 import { useEffect } from 'react';
 
-const weatherData = [
-  { day: 'Sunday', temperature: '28°C' },
-  { day: 'Monday', temperature: '26°C' },
-  { day: 'Tuesday', temperature: '24°C' },
-  { day: 'Wednesday', temperature: '25°C' },
-  { day: 'Thursday', temperature: '27°C' },
-];
-
 export default function Favorites() {
-  const { favorites } = useWeather();
+  const { favorites, currentWeather, setCurrentWeather } = useWeather();
 
   useEffect(() => {
-    // const favoritesWeather = favorites.map(({ LocalizedName, Key }) => {
-    //   fetch('');
-    // });
-  }, [favorites]);
+    const fetchFavoritesWeather = async () => {
+      const updateFavorites = await Promise.all(
+        favorites.map(async ({ Key }, i) => {
+          try {
+            const abortController = new AbortController();
+            const response = await fetch(
+              //`http://dataservice.accuweather.com/currentconditions/v1/${Key}?apikey=${process.env.NEXT_PUBLIC_WEATHER_API}`,
+              'http://localhost:3001/tel-aviv-current',
+              {
+                signal: abortController.signal,
+              }
+            );
+            if (!response.ok) {
+              throw new Error(
+                `Response is not OK: ${response.status}, ${response.statusText}`
+              );
+            }
+            const rawCurrentWeatherData = await response.json();
+            if (!Array.isArray(rawCurrentWeatherData)) {
+              throw new Error(
+                `rawCurrentWeatherData is not of the expected type: ${rawCurrentWeatherData}`
+              );
+            }
 
-  return (
-    <div>
-      <CardList weatherData={weatherData} />
-    </div>
-  );
+            const CurrentWeatherData = rawCurrentWeatherData[0];
+            setCurrentWeather({
+              LocalObservationDateTime:
+                CurrentWeatherData.LocalObservationDateTime,
+              WeatherIcon: CurrentWeatherData.WeatherIcon,
+              IsDayTime: CurrentWeatherData.IsDayTime,
+              Temperature: {
+                Metric: {
+                  Value: CurrentWeatherData.Temperature.Imperial.Value,
+                  Unit: CurrentWeatherData.Temperature.Imperial.Unit,
+                },
+                Imperial: {
+                  Value: CurrentWeatherData.Temperature.Metric.Value,
+                  Unit: CurrentWeatherData.Temperature.Metric.Unit,
+                },
+              },
+            });
+
+            favorites[i].CurrentWeather = currentWeather;
+          } catch (err) {
+            console.error('Unexpected error:', err);
+          }
+        })
+      );
+    };
+    fetchFavoritesWeather();
+  }, [favorites, currentWeather, setCurrentWeather]);
+  return <div>{currentWeather && <CardList weatherData={favorites} />}</div>;
 }
