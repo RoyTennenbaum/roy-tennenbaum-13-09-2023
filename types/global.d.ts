@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from 'react';
+
 interface Props {
   children: ReactNode | ReactNode[];
 }
@@ -74,6 +76,14 @@ interface InitialStore {
   forecast: ForecastProps[];
   favorites: CityProp[];
   setFavorites: Dispatch<SetStateAction<CityProp[]>>;
+  toggleTempUnit: () => void;
+  selectedTempUnit: TempUnit;
+}
+
+type TempUnit = 'C' | 'F';
+interface WeatherUnitProps {
+  value: number;
+  unit: TempUnit;
 }
 
 export {
@@ -85,4 +95,6 @@ export {
   CurrentWeatherProps,
   ForecastProps,
   InitialStore,
+  TempUnit,
+  WeatherUnitProps,
 };
