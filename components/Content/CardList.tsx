@@ -8,7 +8,13 @@ const CardList: FC<CardListProps> = ({ weatherData }) => {
     <div className="w-full">
       <div className="flex min-w-full gap-3 overflow-x-auto px-5">
         {weatherData.map((data, index) => (
-          <WeatherCard key={index} weatherData={data} />
+          <WeatherCard
+            key={index}
+            imageId={data.imageId}
+            imageAlt={data.imageAlt}
+            cityProp={data.cityProp}
+            temperature={data.temperature}
+          />
         ))}
       </div>
     </div>

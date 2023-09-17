@@ -14,11 +14,17 @@ interface ContentProps<T> {
 }
 
 interface CardListProps {
-  weatherData: ForecastProps[] | CityProp[];
+  weatherData: WeatherCardProps[];
 }
+// interface CardListProps {
+//   weatherData: ForecastProps[] | CityProp[];
+// }
 
 interface WeatherCardProps {
-  weatherData: ForecastProps | CityProp;
+  imageId: number;
+  imageAlt: string;
+  temperature: string;
+  cityProp?: CityProp;
 }
 
 interface CurrentWeatherProps {

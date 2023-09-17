@@ -2,17 +2,24 @@
 
 import CardList from '@/components/Content/CardList';
 import { useWeather } from '@/components/Store/WeatherStore';
-import { useEffect } from 'react';
+import { CityProp } from '@/types/global';
+import { useEffect, useState } from 'react';
 
 export default function Favorites() {
-  const { favorites, currentWeather, setCurrentWeather } = useWeather();
+  const [updatedFavorites, setUpdatedFavorites] = useState<CityProp[]>();
+  const [isLoading, setIsLoading] = useState(true);
+  const { favorites } = useWeather();
 
   useEffect(() => {
+    if (!Array.isArray(favorites) || favorites.length === 0)
+      return setIsLoading(false);
+    const abortController = new AbortController();
+    setIsLoading(true);
     const fetchFavoritesWeather = async () => {
-      const updateFavorites = await Promise.all(
-        favorites.map(async ({ Key }, i) => {
+      const updatedFavoritesWeather: CityProp[] = [];
+      await Promise.all(
+        favorites.map(async ({ Key, LocalizedName }, i) => {
           try {
-            const abortController = new AbortController();
             const response = await fetch(
               //`http://dataservice.accuweather.com/currentconditions/v1/${Key}?apikey=${process.env.NEXT_PUBLIC_WEATHER_API}`,
               'http://localhost:3001/tel-aviv-current',
@@ -31,12 +38,12 @@ export default function Favorites() {
                 `rawCurrentWeatherData is not of the expected type: ${rawCurrentWeatherData}`
               );
             }
-
             const CurrentWeatherData = rawCurrentWeatherData[0];
-            setCurrentWeather({
+            const CurrentWeather = {
               LocalObservationDateTime:
                 CurrentWeatherData.LocalObservationDateTime,
               WeatherIcon: CurrentWeatherData.WeatherIcon,
+              WeatherText: CurrentWeatherData.WeatherText,
               IsDayTime: CurrentWeatherData.IsDayTime,
               Temperature: {
                 Metric: {
@@ -48,23 +55,50 @@ export default function Favorites() {
                   Unit: CurrentWeatherData.Temperature.Metric.Unit,
                 },
               },
-            });
+            };
 
-            favorites[i].CurrentWeather = currentWeather;
+            updatedFavoritesWeather.push({
+              Key,
+              LocalizedName,
+              CurrentWeather,
+            });
           } catch (err) {
             console.error('Unexpected error:', err);
           }
         })
       );
+      updatedFavoritesWeather &&
+        setUpdatedFavorites(
+          updatedFavoritesWeather.filter(
+            (favorite) => typeof favorite !== 'undefined'
+          )
+        );
     };
     fetchFavoritesWeather();
-  }, [favorites, currentWeather, setCurrentWeather]);
+    setIsLoading(false);
+    return () => abortController.abort();
+  }, [favorites]);
+
+  const normalizeFavorites = (favorites: CityProp[]) =>
+    favorites.map((favorite) => ({
+      imageId: favorite.CurrentWeather?.WeatherIcon ?? 0,
+      imageAlt: favorite.CurrentWeather?.WeatherText ?? 'Image Alt',
+      temperature: `${favorite.CurrentWeather?.Temperature.Imperial.Value}°${favorite.CurrentWeather?.Temperature.Imperial.Unit}`,
+      cityProp: favorite,
+    }));
+
   return (
     <>
-      {favorites.length > 0 ? (
-        <CardList weatherData={favorites} />
+      {isLoading ? (
+        <p className="text-center">Loading...</p>
       ) : (
-        <p className="text-center">Nothing was added to favorites</p>
+        <>
+          {updatedFavorites && updatedFavorites.length > 0 ? (
+            <CardList weatherData={normalizeFavorites(updatedFavorites)} />
+          ) : (
+            <p className="text-center">Nothing was added to favorites</p>
+          )}
+        </>
       )}
     </>
   );

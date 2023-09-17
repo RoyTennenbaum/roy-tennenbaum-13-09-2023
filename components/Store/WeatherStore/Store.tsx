@@ -40,7 +40,6 @@ const Store = ({ children }: Props) => {
       ? JSON.parse(localStorage['cities'])
       : [];
 
-    if (citiesArr && citiesArr.length < 1) return;
     setFavorites(citiesArr);
   }, []);
 

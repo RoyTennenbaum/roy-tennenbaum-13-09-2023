@@ -1,67 +1,38 @@
 import { FC } from 'react';
 import Image from 'next/image';
 
-import { WeatherCardProps, ForecastProps, CityProp } from '@/types/global';
-import dayOfWeek from '../Utils/dayOfWeek';
+import { CityProp, WeatherCardProps } from '@/types/global';
 import iconImage from '../Utils/iconImage';
-import calculateIfDayTime from '../Utils/calculateIfDayTime';
+import { useWeather } from '../Store/WeatherStore';
+import { useRouter } from 'next/navigation';
 
-const WeatherCard: FC<WeatherCardProps> = ({ weatherData }) => {
-  if ('Day' in weatherData) {
-    const forecastData = weatherData as ForecastProps;
-    const day = dayOfWeek(forecastData.Date);
-    return (
-      <section className="flex h-60 w-60 flex-col items-center justify-evenly gap-4 rounded-lg bg-indigo-600 px-1">
-        {calculateIfDayTime(forecastData.Date) ? (
-          <Image
-            src={iconImage(forecastData.Day.Icon)}
-            alt={forecastData.Day.IconPhrase}
-            width={100}
-            height={100}
-          />
-        ) : (
-          <Image
-            src={iconImage(forecastData.Night.Icon)}
-            alt={forecastData.Night.IconPhrase}
-            width={100}
-            height={100}
-          />
-        )}
-        <section className="flex flex-col gap-2 text-center">
-          <span>{day}</span>
-          <span>
-            {forecastData.Temperature.Minimum.Value}°
-            {forecastData.Temperature.Minimum.Unit} -{' '}
-            {forecastData.Temperature.Maximum.Value}°
-            {forecastData.Temperature.Maximum.Unit}
-          </span>
-        </section>
-      </section>
-    );
-  } else {
-    const currentWeatherData = weatherData as CityProp;
-    return (
-      <section className="flex h-60 w-60 flex-col items-center justify-evenly gap-4 rounded-lg bg-indigo-600 px-1">
-        <span>{currentWeatherData.LocalizedName}</span>
-        {currentWeatherData.CurrentWeather ? (
-          <>
-            <Image
-              src={iconImage(currentWeatherData.CurrentWeather.WeatherIcon)}
-              alt={currentWeatherData.CurrentWeather.WeatherText}
-              width={100}
-              height={100}
-            />
-            <span>
-              {currentWeatherData.CurrentWeather.Temperature.Imperial.Value}°
-              {currentWeatherData.CurrentWeather.Temperature.Imperial.Unit}
-            </span>
-          </>
-        ) : (
-          <span>Loading...</span>
-        )}
-      </section>
-    );
-  }
+const WeatherCard: FC<WeatherCardProps> = ({
+  imageId,
+  imageAlt,
+  cityProp,
+  temperature,
+}) => {
+  const { setSelectedCity } = useWeather();
+  const router = useRouter();
+  const handleSelectedFavoriteCity = (cityProp: CityProp) => {
+    setSelectedCity(cityProp);
+    router.push('/');
+  };
+
+  return (
+    <section
+      className={`flex h-60 w-60 flex-col items-center justify-evenly gap-4 rounded-lg bg-indigo-600 px-1 ${
+        cityProp ? 'cursor-pointer' : ''
+      }`}
+      onClick={() => (cityProp ? handleSelectedFavoriteCity(cityProp) : '')}
+    >
+      {cityProp && <span>{cityProp.LocalizedName}</span>}
+      <Image src={iconImage(imageId)} alt={imageAlt} width={100} height={100} />
+      <span
+        className="flex flex-col gap-2 text-center"
+        dangerouslySetInnerHTML={{ __html: temperature }}
+      />
+    </section>
+  );
 };
-
 export default WeatherCard;
