@@ -60,8 +60,12 @@ export default function Favorites() {
     fetchFavoritesWeather();
   }, [favorites, currentWeather, setCurrentWeather]);
   return (
-    <div>
-      <CardList weatherData={favorites} />
-    </div>
+    <>
+      {favorites.length > 0 ? (
+        <CardList weatherData={favorites} />
+      ) : (
+        <p className="text-center">Nothing was added to favorites</p>
+      )}
+    </>
   );
 }
