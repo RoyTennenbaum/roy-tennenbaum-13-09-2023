@@ -4,14 +4,6 @@ import { useWeather } from '../Store/WeatherStore';
 
 import { ContentProps, CurrentWeatherProps } from '@/types/global';
 
-const weatherData = [
-  { day: 'Sunday', temperature: '38°C' },
-  { day: 'Monday', temperature: '36°C' },
-  { day: 'Tuesday', temperature: '34°C' },
-  { day: 'Wednesday', temperature: '35°C' },
-  { day: 'Thursday', temperature: '37°C' },
-];
-
 const Content: FC<ContentProps<CurrentWeatherProps>> = ({
   currentWeather,
   cityName,

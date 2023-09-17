@@ -59,5 +59,9 @@ export default function Favorites() {
     };
     fetchFavoritesWeather();
   }, [favorites, currentWeather, setCurrentWeather]);
-  return <div>{currentWeather && <CardList weatherData={favorites} />}</div>;
+  return (
+    <div>
+      <CardList weatherData={favorites} />
+    </div>
+  );
 }

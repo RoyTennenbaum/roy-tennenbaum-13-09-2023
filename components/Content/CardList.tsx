@@ -1,24 +1,14 @@
+import { FC } from 'react';
 import WeatherCard from './WeatherCard';
 
-interface WeatherData {
-  day: string;
-  temperature: string;
-}
+import { CardListProps } from '@/types/global';
 
-interface WeatherCardListProps {
-  weatherData: any[];
-}
-
-const CardList: React.FC<WeatherCardListProps> = ({ weatherData }) => {
+const CardList: FC<CardListProps> = ({ weatherData }) => {
   return (
     <div className="w-full">
       <div className="flex min-w-full gap-3 overflow-x-auto px-5">
-        {weatherData.map((data) => (
-          <WeatherCard
-            key={data.day}
-            day={data.day}
-            temperature={data.temperature}
-          />
+        {weatherData.map((data, index) => (
+          <WeatherCard key={index} weatherData={data} />
         ))}
       </div>
     </div>
