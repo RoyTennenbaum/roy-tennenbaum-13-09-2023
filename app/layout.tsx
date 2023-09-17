@@ -25,10 +25,12 @@ export default function RootLayout({ children }: Props) {
       <body
         className={`${inter.className} m-0 flex h-full min-h-screen flex-col bg-cover bg-no-repeat`}
       >
-        <header>
-          <Navbar />
-        </header>
-        <Store>{children}</Store>
+        <Store>
+          <header>
+            <Navbar />
+          </header>
+          {children}
+        </Store>
         <ToastContainer position="top-left" />
         <Footer />
       </body>

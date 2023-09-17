@@ -8,8 +8,11 @@ import {
   CurrentWeatherProps,
   ForecastProps,
   InitialStore,
+  WeatherUnitProps,
+  TempUnit,
 } from '@/types/global';
 import { toast } from 'react-toastify';
+import toggleCelsiusFahrenheit from '@/components/Utils/toggleCelsiusFahrenheit';
 
 const initialStore = {
   selectedCity: {
@@ -22,6 +25,8 @@ const initialStore = {
   forecast: [],
   favorites: [],
   setFavorites: () => {},
+  toggleTempUnit: () => undefined,
+  selectedTempUnit: 'C' as TempUnit,
 };
 
 const Context = createContext<InitialStore>(initialStore);
@@ -35,6 +40,15 @@ const Store = ({ children }: Props) => {
   const [favorites, setFavorites] = useState<CityProp[]>(
     initialStore.favorites
   );
+  const [selectedTempUnit, setSelectedTempUnit] = useState<TempUnit>('C');
+
+  const toggleTempUnit = () => {
+    if (selectedTempUnit === 'C') {
+      setSelectedTempUnit('F');
+    } else {
+      setSelectedTempUnit('C');
+    }
+  };
 
   useEffect(() => {
     const citiesArr = localStorage['cities']
@@ -157,6 +171,8 @@ const Store = ({ children }: Props) => {
         forecast,
         favorites,
         setFavorites,
+        toggleTempUnit,
+        selectedTempUnit,
       }}
     >
       {children}
