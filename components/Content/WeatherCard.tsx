@@ -38,6 +38,29 @@ const WeatherCard: FC<WeatherCardProps> = ({ weatherData }) => {
         </section>
       </section>
     );
+  } else {
+    const currentWeatherData = weatherData as CityProp;
+    return (
+      <section className="flex h-60 w-60 flex-col items-center justify-evenly gap-4 rounded-lg bg-indigo-600 px-1">
+        <span>{currentWeatherData.LocalizedName}</span>
+        {currentWeatherData.CurrentWeather ? (
+          <>
+            <Image
+              src={iconImage(currentWeatherData.CurrentWeather.WeatherIcon)}
+              alt={currentWeatherData.CurrentWeather.WeatherText}
+              width={100}
+              height={100}
+            />
+            <span>
+              {currentWeatherData.CurrentWeather.Temperature.Imperial.Value}°
+              {currentWeatherData.CurrentWeather.Temperature.Imperial.Unit}
+            </span>
+          </>
+        ) : (
+          <span>Loading...</span>
+        )}
+      </section>
+    );
   }
 };
 

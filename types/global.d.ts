@@ -24,6 +24,7 @@ interface WeatherCardProps {
 interface CurrentWeatherProps {
   LocalObservationDateTime: string;
   WeatherIcon: number;
+  WeatherText: string;
   IsDayTime: boolean;
   Temperature: {
     Metric: {

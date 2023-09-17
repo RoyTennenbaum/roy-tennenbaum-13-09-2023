@@ -94,6 +94,7 @@ const Store = ({ children }: Props) => {
         setCurrentWeather({
           LocalObservationDateTime: CurrentWeatherData.LocalObservationDateTime,
           WeatherIcon: CurrentWeatherData.WeatherIcon,
+          WeatherText: CurrentWeatherData.WeatherText,
           IsDayTime: CurrentWeatherData.IsDayTime,
           Temperature: {
             Metric: {
