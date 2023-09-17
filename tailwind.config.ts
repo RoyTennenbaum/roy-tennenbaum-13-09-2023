@@ -1,6 +1,9 @@
 import type { Config } from 'tailwindcss';
 
+const colors = require('tailwindcss/colors');
+
 const config: Config = {
+  darkMode: 'class',
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -8,8 +11,14 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'main-background': "url('/images/background.svg')",
+      colors: {
+        lightModeBg: colors.slate[100],
+        lightModeAccBg: colors.indigo[100],
+        lightModeText: colors.slate[950],
+
+        darkModeBg: colors.slate[950],
+        darkModeAccBg: colors.slate[800],
+        darkModeText: colors.slate[50],
       },
     },
   },

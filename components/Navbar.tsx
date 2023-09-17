@@ -2,10 +2,9 @@
 
 import Link from 'next/link';
 import { useWeather } from './Store/WeatherStore';
-import { useContext } from 'react';
+import DarkModeBtn from './Common/DarkModeBtn';
 
 const Navbar: React.FC = () => {
-  // const { toggleTempUnit, selectedTempUnit } = useContext();
   const { toggleTempUnit, selectedTempUnit } = useWeather();
 
   return (
@@ -14,6 +13,9 @@ const Navbar: React.FC = () => {
       <ul className="flex gap-2">
         <li>
           <button onClick={() => toggleTempUnit()}>{selectedTempUnit}</button>
+        </li>
+        <li>
+          <DarkModeBtn />
         </li>
         <li>
           <Link href="/">Home</Link>
