@@ -1,6 +1,13 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
 import {
   Props,
@@ -12,28 +19,27 @@ import {
 } from '@/types/global';
 import { toast } from 'react-toastify';
 
+interface InitialStore {
+  selectedCity: CityProp;
+  setSelectedCity: Dispatch<SetStateAction<CityProp>>;
+  currentWeather?: CurrentWeatherProps;
+  setCurrentWeather: React.Dispatch<
+    React.SetStateAction<CurrentWeatherProps | undefined>
+  >;
+  forecast: ForecastProps[];
+  favorites: CityProp[];
+  setFavorites: Dispatch<SetStateAction<CityProp[]>>;
+  toggleTempUnit: () => void;
+  selectedTempUnit: TempUnit;
+}
+
 const initialStore = {
   selectedCity: {
     Key: '215854',
     LocalizedName: 'Tel Aviv',
   },
   setSelectedCity: () => {},
-  currentWeather: {
-    LocalObservationDateTime: '',
-    WeatherIcon: 0,
-    WeatherText: '',
-    IsDayTime: false,
-    Temperature: {
-      Metric: {
-        Value: 0,
-        Unit: '',
-      },
-      Imperial: {
-        Value: 0,
-        Unit: '',
-      },
-    },
-  },
+  currentWeather: undefined,
   setCurrentWeather: () => {},
   forecast: [],
   favorites: [],
@@ -72,107 +78,109 @@ const Store = ({ children }: Props) => {
   }, []);
 
   useEffect(() => {
-    const abortController = new AbortController();
-    const current = async (abortSignal: AbortSignal) => {
-      try {
-        const [currentWeatherResponse, forecastResponse] = await Promise.all([
-          fetch(
-            //`http://dataservice.accuweather.com/currentconditions/v1/${selectedCity.Key}?apikey=${process.env.NEXT_PUBLIC_WEATHER_API}`,
-            'http://localhost:3001/tel-aviv-current',
-            {
-              signal: abortSignal,
-            }
-          ),
-          fetch(
-            //`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${selectedCity.Key}?apikey=${process.env.NEXT_PUBLIC_WEATHER_API}`
-            'http://localhost:3001/tel-aviv-5',
-            {
-              signal: abortSignal,
-            }
-          ),
-        ]);
+    (async () => {
+      const abortController = new AbortController();
+      const current = async (abortSignal: AbortSignal) => {
+        try {
+          const [currentWeatherResponse, forecastResponse] = await Promise.all([
+            fetch(
+              //`http://dataservice.accuweather.com/currentconditions/v1/${selectedCity.Key}?apikey=${process.env.NEXT_PUBLIC_WEATHER_API}`,
+              'http://localhost:3001/tel-aviv-current',
+              {
+                signal: abortSignal,
+              }
+            ),
+            fetch(
+              //`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${selectedCity.Key}?apikey=${process.env.NEXT_PUBLIC_WEATHER_API}`
+              'http://localhost:3001/tel-aviv-5',
+              {
+                signal: abortSignal,
+              }
+            ),
+          ]);
 
-        if (!currentWeatherResponse.ok) {
-          toast('Error occured while fetching!');
-          throw new Error(
-            `currentWeatherResponse is not OK: ${currentWeatherResponse.status}, ${currentWeatherResponse.statusText}`
-          );
-        }
-        if (!forecastResponse.ok) {
-          toast('Error occured while fetching!');
-          throw new Error(
-            `forecastResponse is not OK: ${forecastResponse.status}, ${forecastResponse.statusText}`
-          );
-        }
+          if (!currentWeatherResponse.ok) {
+            toast('Error occured while fetching!');
+            throw new Error(
+              `currentWeatherResponse is not OK: ${currentWeatherResponse.status}, ${currentWeatherResponse.statusText}`
+            );
+          }
+          if (!forecastResponse.ok) {
+            toast('Error occured while fetching!');
+            throw new Error(
+              `forecastResponse is not OK: ${forecastResponse.status}, ${forecastResponse.statusText}`
+            );
+          }
 
-        const rawCurrentWeatherData = await currentWeatherResponse.json();
-        const rawForecastData = await forecastResponse.json();
+          const rawCurrentWeatherData = await currentWeatherResponse.json();
+          const rawForecastData = await forecastResponse.json();
 
-        if (!Array.isArray(rawCurrentWeatherData)) {
-          toast('Wrong data type!');
-          throw new Error(
-            `rawCurrentWeatherData is not of the expected type: ${rawCurrentWeatherData}`
-          );
-        }
-        if (typeof rawForecastData !== 'object') {
-          toast('Wrong data type!');
-          throw new Error(
-            `rawForecastData is not of the expected type: ${rawForecastData}`
-          );
-        }
-
-        const CurrentWeatherData = rawCurrentWeatherData[0];
-        setCurrentWeather({
-          LocalObservationDateTime: CurrentWeatherData.LocalObservationDateTime,
-          WeatherIcon: CurrentWeatherData.WeatherIcon,
-          WeatherText: CurrentWeatherData.WeatherText,
-          IsDayTime: CurrentWeatherData.IsDayTime,
-          Temperature: {
-            Metric: {
-              Value: CurrentWeatherData.Temperature.Metric.Value,
-              Unit: CurrentWeatherData.Temperature.Metric.Unit,
-            },
-            Imperial: {
-              Value: CurrentWeatherData.Temperature.Imperial.Value,
-              Unit: CurrentWeatherData.Temperature.Imperial.Unit,
-            },
-          },
-        });
-
-        const forecastData = rawForecastData.DailyForecasts.map(
-          (forecastItem: any) => ({
-            Date: forecastItem.Date,
+          if (!Array.isArray(rawCurrentWeatherData)) {
+            toast('Wrong data type!');
+            throw new Error(
+              `rawCurrentWeatherData is not of the expected type: ${rawCurrentWeatherData}`
+            );
+          }
+          if (typeof rawForecastData !== 'object') {
+            toast('Wrong data type!');
+            throw new Error(
+              `rawForecastData is not of the expected type: ${rawForecastData}`
+            );
+          }
+          const CurrentWeatherData = rawCurrentWeatherData[0];
+          setCurrentWeather({
+            LocalObservationDateTime:
+              CurrentWeatherData.LocalObservationDateTime,
+            WeatherIcon: CurrentWeatherData.WeatherIcon,
+            WeatherText: CurrentWeatherData.WeatherText,
+            IsDayTime: CurrentWeatherData.IsDayTime,
             Temperature: {
-              Minimum: {
-                Value: forecastItem.Temperature.Minimum.Value,
-                Unit: forecastItem.Temperature.Minimum.Unit,
+              Metric: {
+                Value: CurrentWeatherData.Temperature.Metric.Value,
+                Unit: CurrentWeatherData.Temperature.Metric.Unit,
               },
-              Maximum: {
-                Value: forecastItem.Temperature.Maximum.Value,
-                Unit: forecastItem.Temperature.Maximum.Unit,
+              Imperial: {
+                Value: CurrentWeatherData.Temperature.Imperial.Value,
+                Unit: CurrentWeatherData.Temperature.Imperial.Unit,
               },
             },
-            Day: {
-              Icon: forecastItem.Day.Icon,
-              IconPhrase: forecastItem.Day.IconPhrase,
-            },
-            Night: {
-              Icon: forecastItem.Night.Icon,
-              IconPhrase: forecastItem.Night.IconPhrase,
-            },
-          })
-        );
+          });
 
-        setForecast(forecastData);
-      } catch (err) {
-        toast('Oops! unexpected error!');
-        console.error('Unexpected error:', err);
-      }
-    };
-    current(abortController.signal);
+          const forecastData = rawForecastData.DailyForecasts.map(
+            (forecastItem: any) => ({
+              Date: forecastItem.Date,
+              Temperature: {
+                Minimum: {
+                  Value: forecastItem.Temperature.Minimum.Value,
+                  Unit: forecastItem.Temperature.Minimum.Unit,
+                },
+                Maximum: {
+                  Value: forecastItem.Temperature.Maximum.Value,
+                  Unit: forecastItem.Temperature.Maximum.Unit,
+                },
+              },
+              Day: {
+                Icon: forecastItem.Day.Icon,
+                IconPhrase: forecastItem.Day.IconPhrase,
+              },
+              Night: {
+                Icon: forecastItem.Night.Icon,
+                IconPhrase: forecastItem.Night.IconPhrase,
+              },
+            })
+          );
 
-    return () => abortController.abort();
-  }, [selectedCity.Key]);
+          setForecast(forecastData);
+        } catch (err) {
+          toast('Oops! unexpected error!');
+          console.error('Unexpected error:', err);
+        }
+      };
+      current(abortController.signal);
+
+      return () => abortController.abort();
+    })();
+  }, []);
 
   return (
     <Context.Provider

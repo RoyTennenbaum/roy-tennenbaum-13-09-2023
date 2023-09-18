@@ -2,17 +2,18 @@ import { FC } from 'react';
 import CardList from './CardList';
 import { useWeather } from '../Store/WeatherStore';
 
+import calculateIfDayTime from '../Utils/calculateIfDayTime';
+import dayOfWeek from '../Utils/dayOfWeek';
+import toggleCelsiusFahrenheit from '../Utils/toggleCelsiusFahrenheit';
+
 import {
   CityProp,
   ContentProps,
   CurrentWeatherProps,
   ForecastProps,
 } from '@/types/global';
-import calculateIfDayTime from '../Utils/calculateIfDayTime';
-import dayOfWeek from '../Utils/dayOfWeek';
-import toggleCelsiusFahrenheit from '../Utils/toggleCelsiusFahrenheit';
 
-const Content: FC<ContentProps<CurrentWeatherProps | undefined>> = ({
+const Content: FC<ContentProps<CurrentWeatherProps>> = ({
   currentWeather,
   cityName,
 }) => {
@@ -71,9 +72,9 @@ const Content: FC<ContentProps<CurrentWeatherProps | undefined>> = ({
         <div className="flex flex-col items-stretch">
           <span>{cityName}</span>
           <span>
-            {currentWeather !== undefined && selectedTempUnit === 'C'
-              ? `${currentWeather?.Temperature?.Metric.Value}°${currentWeather?.Temperature?.Metric.Unit}`
-              : `${currentWeather?.Temperature?.Imperial.Value}°${currentWeather?.Temperature?.Imperial.Unit}`}
+            {selectedTempUnit === 'C'
+              ? `${currentWeather.Temperature.Metric.Value}°${currentWeather.Temperature.Metric.Unit}`
+              : `${currentWeather.Temperature.Imperial.Value}°${currentWeather.Temperature.Imperial.Unit}`}
           </span>
         </div>
         <button onClick={() => toggleFavorites(selectedCity)}>
