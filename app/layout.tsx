@@ -2,8 +2,8 @@ import './globals.css';
 import 'react-toastify/dist/ReactToastify.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { Providers } from './providers';
 
+import { Providers } from './providers';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Store from '@/components/Store/WeatherStore';
@@ -21,7 +21,7 @@ export default function RootLayout({ children }: Props) {
   return (
     <html lang="en" className="h-full" suppressHydrationWarning>
       <body
-        className={`${inter.className} m-0 flex h-full min-h-screen flex-col bg-cover bg-no-repeat`}
+        className={`${inter.className} bg-modeLightMainBg dark:bg-modeDarkMainBg text-modeLightText dark:text-modeDarkText m-0 flex h-full min-h-screen flex-col`}
       >
         <Providers>
           <Store>

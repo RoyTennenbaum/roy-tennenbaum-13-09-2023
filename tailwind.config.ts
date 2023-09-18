@@ -1,6 +1,6 @@
 import type { Config } from 'tailwindcss';
 
-const colors = require('tailwindcss/colors');
+import colors from 'tailwindcss/colors';
 
 const config: Config = {
   darkMode: 'class',
@@ -12,13 +12,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        lightModeBg: colors.slate[100],
-        lightModeAccBg: colors.indigo[100],
-        lightModeText: colors.slate[950],
+        modeLightMainBg: colors.sky[300],
+        modeLightAccBg: colors.sky[100],
+        modeLightText: colors.slate[950],
 
-        darkModeBg: colors.slate[950],
-        darkModeAccBg: colors.slate[800],
-        darkModeText: colors.slate[50],
+        modeDarkMainBg: colors.indigo[700],
+        modeDarkAccBg: colors.indigo[950],
+        modeDarkText: colors.slate[50],
       },
     },
   },

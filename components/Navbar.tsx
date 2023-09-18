@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useWeather } from './Store/WeatherStore';
 import DarkModeBtn from './Common/DarkModeBtn';
+import NavbarButtonUI from './UI/NavbarButtonUI';
 
 const Navbar: React.FC = () => {
   const { toggleTempUnit, selectedTempUnit } = useWeather();
@@ -12,16 +13,24 @@ const Navbar: React.FC = () => {
       <h1>Weather Task</h1>
       <ul className="flex gap-2">
         <li>
-          <button onClick={() => toggleTempUnit()}>{selectedTempUnit}</button>
+          <NavbarButtonUI>
+            <button onClick={() => toggleTempUnit()}>{selectedTempUnit}</button>
+          </NavbarButtonUI>
         </li>
         <li>
-          <DarkModeBtn />
+          <NavbarButtonUI>
+            <DarkModeBtn />
+          </NavbarButtonUI>
         </li>
         <li>
-          <Link href="/">Home</Link>
+          <NavbarButtonUI>
+            <Link href="/">Home</Link>
+          </NavbarButtonUI>
         </li>
         <li>
-          <Link href="/favorites">Favorites</Link>
+          <NavbarButtonUI>
+            <Link href="/favorites">Favorites</Link>
+          </NavbarButtonUI>
         </li>
       </ul>
     </nav>
