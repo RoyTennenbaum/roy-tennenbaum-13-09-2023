@@ -82,10 +82,12 @@ export default function Home() {
 
   return (
     <main className="flex h-full flex-col px-4 md:px-20 lg:px-40 xl:px-60">
-      <Search onSearch={handleSearch} />
-      {showDropdown && (
-        <Dropdown cities={cities} onSelect={(city) => handleSelectCity(city)} />
-      )}
+      <Search
+        onSearch={handleSearch}
+        showDropdown={showDropdown}
+        cities={cities}
+        onSelect={(city: any) => handleSelectCity(city)}
+      />
       {currentWeather && (
         <Content
           cityName={selectedCity.LocalizedName}

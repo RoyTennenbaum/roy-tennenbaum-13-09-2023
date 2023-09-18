@@ -1,15 +1,24 @@
 import Image from 'next/image';
+import Dropdown from './Dropdown';
 
 interface searchProps {
   onSearch: (city: string) => void;
+  showDropdown: any;
+  cities: any;
+  onSelect: any;
 }
 
-const Search: React.FC<searchProps> = ({ onSearch }) => {
+const Search: React.FC<searchProps> = ({
+  onSearch,
+  showDropdown,
+  cities,
+  onSelect,
+}) => {
   return (
-    <section className="flex justify-center py-2">
+    <section className="flex flex-col justify-center py-2">
       <label
         htmlFor="search"
-        className="flex rounded-full bg-neutral-300 p-3 outline outline-1 outline-gray-600 focus-within:outline-2 focus-within:outline-gray-800 dark:bg-neutral-600 dark:outline-gray-400 dark:focus-within:outline-gray-200"
+        className="flex rounded-lg bg-neutral-300 p-3 outline outline-1 outline-gray-600 focus-within:outline-2 focus-within:outline-gray-800 dark:bg-neutral-600 dark:outline-gray-400 dark:focus-within:outline-gray-200"
       >
         <Image
           src="./images/search.svg"
@@ -27,6 +36,7 @@ const Search: React.FC<searchProps> = ({ onSearch }) => {
           onChange={(e) => onSearch(e.target.value)}
         />
       </label>
+      {showDropdown && <Dropdown cities={cities} onSelect={onSelect} />}
     </section>
   );
 };
