@@ -8,11 +8,9 @@ import {
   CurrentWeatherProps,
   ForecastProps,
   InitialStore,
-  WeatherUnitProps,
   TempUnit,
 } from '@/types/global';
 import { toast } from 'react-toastify';
-import toggleCelsiusFahrenheit from '@/components/Utils/toggleCelsiusFahrenheit';
 
 const initialStore = {
   selectedCity: {
@@ -20,7 +18,22 @@ const initialStore = {
     LocalizedName: 'Tel Aviv',
   },
   setSelectedCity: () => {},
-  currentWeather: undefined,
+  currentWeather: {
+    LocalObservationDateTime: '',
+    WeatherIcon: 0,
+    WeatherText: '',
+    IsDayTime: false,
+    Temperature: {
+      Metric: {
+        Value: 0,
+        Unit: '',
+      },
+      Imperial: {
+        Value: 0,
+        Unit: '',
+      },
+    },
+  },
   setCurrentWeather: () => {},
   forecast: [],
   favorites: [],
@@ -35,9 +48,7 @@ const Store = ({ children }: Props) => {
   const [selectedCity, setSelectedCity] = useState<CityProp>(
     initialStore.selectedCity
   );
-  const [currentWeather, setCurrentWeather] = useState<
-    CurrentWeatherProps | undefined
-  >();
+  const [currentWeather, setCurrentWeather] = useState<CurrentWeatherProps>();
   const [forecast, setForecast] = useState<ForecastProps[]>([]);
   const [favorites, setFavorites] = useState<CityProp[]>(
     initialStore.favorites

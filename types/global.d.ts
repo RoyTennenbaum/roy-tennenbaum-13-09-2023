@@ -27,18 +27,18 @@ interface WeatherCardProps {
 }
 
 interface CurrentWeatherProps {
-  LocalObservationDateTime: string | undefined;
-  WeatherIcon: number | undefined;
-  WeatherText: string | undefined;
-  IsDayTime: boolean | undefined;
-  Temperature: {
+  LocalObservationDateTime?: string;
+  WeatherIcon?: number;
+  WeatherText?: string;
+  IsDayTime?: boolean;
+  Temperature?: {
     Metric: {
-      Value: number | undefined;
-      Unit: string | undefined;
+      Value: number;
+      Unit: string;
     };
     Imperial: {
-      Value: number | undefined;
-      Unit: string | undefined;
+      Value: number;
+      Unit: string;
     };
   };
 }

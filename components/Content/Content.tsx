@@ -71,9 +71,9 @@ const Content: FC<ContentProps<CurrentWeatherProps | undefined>> = ({
         <div className="flex flex-col items-stretch">
           <span>{cityName}</span>
           <span>
-            {selectedTempUnit === 'C'
-              ? `${currentWeather?.Temperature.Metric.Value}°${currentWeather?.Temperature.Metric.Unit}`
-              : `${currentWeather?.Temperature.Imperial.Value}°${currentWeather?.Temperature.Imperial.Unit}`}
+            {currentWeather !== undefined && selectedTempUnit === 'C'
+              ? `${currentWeather?.Temperature?.Metric.Value}°${currentWeather?.Temperature?.Metric.Unit}`
+              : `${currentWeather?.Temperature?.Imperial.Value}°${currentWeather?.Temperature?.Imperial.Unit}`}
           </span>
         </div>
         <button onClick={() => toggleFavorites(selectedCity)}>
