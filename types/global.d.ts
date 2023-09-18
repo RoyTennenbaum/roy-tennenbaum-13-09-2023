@@ -27,18 +27,18 @@ interface WeatherCardProps {
 }
 
 interface CurrentWeatherProps {
-  LocalObservationDateTime: string;
-  WeatherIcon: number;
-  WeatherText: string;
-  IsDayTime: boolean;
+  LocalObservationDateTime: string | undefined;
+  WeatherIcon: number | undefined;
+  WeatherText: string | undefined;
+  IsDayTime: boolean | undefined;
   Temperature: {
     Metric: {
-      Value: number;
-      Unit: string;
+      Value: number | undefined;
+      Unit: string | undefined;
     };
     Imperial: {
-      Value: number;
-      Unit: string;
+      Value: number | undefined;
+      Unit: string | undefined;
     };
   };
 }
@@ -69,7 +69,7 @@ interface InitialStore {
   selectedCity: CityProp;
   setSelectedCity: Dispatch<SetStateAction<CityProp>>;
   currentWeather?: CurrentWeatherProps;
-  setCurrentWeather: Dispatch<SetStateAction<CurrentWeatherProps>>;
+  setCurrentWeather: Dispatch<SetStateAction<CurrentWeatherProps | undefined>>;
   forecast: ForecastProps[];
   favorites: CityProp[];
   setFavorites: Dispatch<SetStateAction<CityProp[]>>;
