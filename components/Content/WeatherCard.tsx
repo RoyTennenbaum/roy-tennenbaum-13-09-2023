@@ -21,7 +21,7 @@ const WeatherCard: FC<WeatherCardProps> = ({
 
   return (
     <section
-      className={`flex h-60 w-60 flex-col items-center justify-evenly gap-4 rounded-lg bg-indigo-600 px-1 ${
+      className={`flex h-60 w-60 flex-col items-center justify-evenly gap-4 rounded-lg bg-orange-300 px-1 shadow-md dark:bg-indigo-600 ${
         cityProp ? 'cursor-pointer' : ''
       }`}
       onClick={() => (cityProp ? handleSelectedFavoriteCity(cityProp) : '')}
