@@ -68,7 +68,7 @@ interface ForecastProps {
 interface InitialStore {
   selectedCity: CityProp;
   setSelectedCity: Dispatch<SetStateAction<CityProp>>;
-  currentWeather?: CurrentWeatherProps;
+  currentWeather?: CurrentWeatherProps | undefined;
   setCurrentWeather: Dispatch<SetStateAction<CurrentWeatherProps | undefined>>;
   forecast: ForecastProps[];
   favorites: CityProp[];
