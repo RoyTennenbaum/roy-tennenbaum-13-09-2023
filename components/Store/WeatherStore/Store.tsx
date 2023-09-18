@@ -84,15 +84,15 @@ const Store = ({ children }: Props) => {
         try {
           const [currentWeatherResponse, forecastResponse] = await Promise.all([
             fetch(
-              //`http://dataservice.accuweather.com/currentconditions/v1/${selectedCity.Key}?apikey=${process.env.NEXT_PUBLIC_WEATHER_API}`,
-              'http://localhost:3001/tel-aviv-current',
+              `http://dataservice.accuweather.com/currentconditions/v1/${selectedCity.Key}?apikey=${process.env.NEXT_PUBLIC_WEATHER_API}`,
+              //development: 'http://localhost:3001/tel-aviv-current',
               {
                 signal: abortSignal,
               }
             ),
             fetch(
-              //`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${selectedCity.Key}?apikey=${process.env.NEXT_PUBLIC_WEATHER_API}`
-              'http://localhost:3001/tel-aviv-5',
+              `http://dataservice.accuweather.com/forecasts/v1/daily/5day/${selectedCity.Key}?apikey=${process.env.NEXT_PUBLIC_WEATHER_API}&metric=true`,
+              //development: 'http://localhost:3001/tel-aviv-5',
               {
                 signal: abortSignal,
               }
@@ -180,7 +180,7 @@ const Store = ({ children }: Props) => {
 
       return () => abortController.abort();
     })();
-  }, []);
+  }, [selectedCity.Key]);
 
   return (
     <Context.Provider

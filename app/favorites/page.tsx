@@ -22,8 +22,8 @@ export default function Favorites() {
         favorites.map(async ({ Key, LocalizedName }, i) => {
           try {
             const response = await fetch(
-              //`http://dataservice.accuweather.com/currentconditions/v1/${Key}?apikey=${process.env.NEXT_PUBLIC_WEATHER_API}`,
-              'http://localhost:3001/tel-aviv-current',
+              `http://dataservice.accuweather.com/currentconditions/v1/${Key}?apikey=${process.env.NEXT_PUBLIC_WEATHER_API}`,
+              //development: 'http://localhost:3001/tel-aviv-current',
               {
                 signal: abortController.signal,
               }

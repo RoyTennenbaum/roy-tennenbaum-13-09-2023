@@ -4,10 +4,8 @@ import { useState, useEffect } from 'react';
 
 import Content from '@/components/Content/Content';
 import Search from '@/components/Search/Search';
-import Dropdown from '@/components/Search/Dropdown';
 import { useWeather } from '@/components/Store/WeatherStore/Store';
 import { toast } from 'react-toastify';
-
 import { CityProp } from '@/types/global';
 
 export default function Home() {
@@ -28,8 +26,8 @@ export default function Home() {
 
       try {
         const response = await fetch(
-          // `http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${process.env.NEXT_PUBLIC_WEATHER_API}&q=${query}`,
-          'http://localhost:3001/cities',
+          `http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${process.env.NEXT_PUBLIC_WEATHER_API}&q=${query}`,
+          //development: 'http://localhost:3001/cities',
           {
             signal: abortSignal,
           }
