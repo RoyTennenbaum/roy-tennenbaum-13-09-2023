@@ -54,19 +54,23 @@ export default function Home() {
           LocalizedName: city.LocalizedName,
         }));
 
-        setCities(
-          data.filter((data) =>
-            data.LocalizedName.toLowerCase().includes(query)
-          )
+        const newCities = data.filter((data) =>
+          data.LocalizedName.toLowerCase().includes(query)
         );
+        setCities(newCities);
+        newCities && newCities.length === 0 && setShowDropdown(false);
       } catch (err) {
         toast('Oops! unexpected error!');
         console.error('Unexpected error:', err);
       }
     };
-    autoCompleteLocation(abortController.signal);
 
-    return () => abortController.abort();
+    const timeout = setTimeout(autoCompleteLocation, 200);
+
+    return () => {
+      abortController.abort();
+      clearTimeout(timeout);
+    };
   }, [query]);
 
   const handleSearch = (value: string) => {

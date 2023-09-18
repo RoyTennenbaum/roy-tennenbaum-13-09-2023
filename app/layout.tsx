@@ -21,7 +21,7 @@ export default function RootLayout({ children }: Props) {
   return (
     <html lang="en" className="h-full" suppressHydrationWarning>
       <body
-        className={`${inter.className} bg-modeLightMainBg dark:bg-modeDarkMainBg text-modeLightText dark:text-modeDarkText m-0 flex h-full min-h-screen flex-col`}
+        className={`${inter.className} m-0 flex h-full min-h-screen flex-col bg-modeLightMainBg text-modeLightText dark:bg-modeDarkMainBg dark:text-modeDarkText`}
       >
         <Providers>
           <Store>

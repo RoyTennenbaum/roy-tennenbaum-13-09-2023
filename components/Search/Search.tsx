@@ -33,6 +33,7 @@ const Search: React.FC<searchProps> = ({
           placeholder="Search by location..."
           className="bg-inherit outline-none placeholder:focus-within:text-gray-800 dark:placeholder:text-gray-200"
           autoComplete="off"
+          maxLength={15}
           onChange={(e) => onSearch(e.target.value)}
         />
       </label>
