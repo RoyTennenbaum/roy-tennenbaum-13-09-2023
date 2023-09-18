@@ -35,7 +35,9 @@ const Store = ({ children }: Props) => {
   const [selectedCity, setSelectedCity] = useState<CityProp>(
     initialStore.selectedCity
   );
-  const [currentWeather, setCurrentWeather] = useState<CurrentWeatherProps>();
+  const [currentWeather, setCurrentWeather] = useState<
+    CurrentWeatherProps | undefined
+  >();
   const [forecast, setForecast] = useState<ForecastProps[]>([]);
   const [favorites, setFavorites] = useState<CityProp[]>(
     initialStore.favorites

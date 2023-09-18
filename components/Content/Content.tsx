@@ -12,7 +12,7 @@ import calculateIfDayTime from '../Utils/calculateIfDayTime';
 import dayOfWeek from '../Utils/dayOfWeek';
 import toggleCelsiusFahrenheit from '../Utils/toggleCelsiusFahrenheit';
 
-const Content: FC<ContentProps<CurrentWeatherProps>> = ({
+const Content: FC<ContentProps<CurrentWeatherProps | undefined>> = ({
   currentWeather,
   cityName,
 }) => {
@@ -66,7 +66,7 @@ const Content: FC<ContentProps<CurrentWeatherProps>> = ({
     });
 
   return (
-    <section className="bg-modeLightAccBg dark:bg-modeDarkAccBg flex grow flex-col rounded-lg p-3 opacity-80 shadow-2xl">
+    <section className="flex grow flex-col rounded-lg bg-modeLightAccBg p-3 opacity-80 shadow-2xl dark:bg-modeDarkAccBg">
       <section className="flex justify-between">
         <div className="flex flex-col items-stretch">
           <span>{cityName}</span>
