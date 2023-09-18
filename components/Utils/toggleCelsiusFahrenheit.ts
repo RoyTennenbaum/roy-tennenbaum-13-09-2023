@@ -6,7 +6,7 @@ export default function toggleCelsiusFahrenheit({
 }: WeatherUnitProps) {
   if (unit === 'C') {
     const fahrenheitValue = (value * 9) / 5 + 32;
-    return { value: fahrenheitValue.toFixed(1), unit: 'F' };
+    return { value: fahrenheitValue.toFixed(), unit: 'F' };
   } else {
     const celsiusValue = ((value - 32) * 5) / 9;
     return { value: celsiusValue, unit: 'C' };

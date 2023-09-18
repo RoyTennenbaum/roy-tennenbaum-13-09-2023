@@ -66,7 +66,7 @@ const Content: FC<ContentProps<CurrentWeatherProps>> = ({
     });
 
   return (
-    <section className="flex grow flex-col rounded-lg bg-gray-700 p-3 opacity-60">
+    <section className="bg-modeLightAccBg dark:bg-modeDarkAccBg flex grow flex-col rounded-lg p-3 opacity-80 shadow-2xl">
       <section className="flex justify-between">
         <div className="flex flex-col items-stretch">
           <span>{cityName}</span>

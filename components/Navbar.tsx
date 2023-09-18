@@ -9,15 +9,17 @@ const Navbar: React.FC = () => {
   const { toggleTempUnit, selectedTempUnit } = useWeather();
 
   return (
-    <nav className="sticky mx-3 flex h-12 items-center justify-between">
-      <h1>Weather Task</h1>
-      <ul className="flex gap-2">
+    <nav className="sticky flex h-12 items-center justify-between bg-modeLightAccBg p-3 shadow-xl dark:bg-modeDarkAccBg">
+      <h1 className="text-2xl font-black">Weather Task</h1>
+      <ul className="flex gap-1">
         <li>
           <NavbarButtonUI>
-            <button onClick={() => toggleTempUnit()}>{selectedTempUnit}</button>
+            <button onClick={() => toggleTempUnit()}>
+              View: {selectedTempUnit}°
+            </button>
           </NavbarButtonUI>
         </li>
-        <li>
+        <li className="mr-2">
           <NavbarButtonUI>
             <DarkModeBtn />
           </NavbarButtonUI>
