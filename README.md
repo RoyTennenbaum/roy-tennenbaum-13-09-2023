@@ -29,8 +29,33 @@ This is a home assignment I recently received, it shows the weather in all the c
 ## Development Environment Setup
 ### Daily API calls are done but you're curious to view the website in it's full glory? here's how:
 
+#### Prerequisites
+- Node.js v18+
+- Create an account on [Accuweather account](https://developer.accuweather.com/)https://developer.accuweather.com/
 
+#### Installing
+1. Clone the repository:
+   
+```$ git clone https://github.com/RoyTennenbaum/roy-tennenbaum-13-09-2023.git```
 
+2. Navigate to the project directory:
+   
+```$ cd roy-tennenbaum-13-09-2023```
+
+3. Install dependencies:
+
+```$ npm i```
+
+**4. Configuration**
+Create a .env file in the project root and insert the apikey you got from Accuweather like so:
+
+```NEXT_PUBLIC_WEATHER_API = insert key here```
+
+5. Run the development server
+
+```$ npm run dev```
+
+6. Enjoy :D
 
 
 
