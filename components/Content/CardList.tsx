@@ -6,7 +6,7 @@ import { CardListProps } from '@/types/global';
 const CardList: FC<CardListProps> = ({ weatherData }) => {
   return (
     <div className="w-full">
-      <div className="flex min-w-full gap-3 overflow-x-auto px-5">
+      <div className="flex justify-start gap-3 overflow-x-auto px-5 xl:justify-around">
         {weatherData.map((data, index) => (
           <WeatherCard
             key={index}
